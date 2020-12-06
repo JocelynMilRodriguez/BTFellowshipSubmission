@@ -1,0 +1,255 @@
+/*
+ AUTHOR:  Jocelyn M. Rodriguez
+ DATE: November 30th 2020
+ ASSIGNMENT: Build a GUI that calculate a coffee drink (the cost without taxes, the tax and the cost with taxes) item at the CSC210 Coffee House. 
+ INPUT: User will input a quantity for the coffee cups they would like to purchase. 
+ OUTPUT:  The output will display the cost without taxes, the tax and the cost with taxes.
+ PURPOSE: To calculate a coffee drink (the cost without taxes, the tax and the cost with taxes) item at the CSC210 Coffee House. 
+ WHAT I LEARNED: How to build a simple GUI as well as add color to text and images to boxes. 
+ Copyright © 2020 Jocelyn M. Rodriguez. All rights reserved.
+*/
+
+
+
+package application;
+
+import java.io.InputStream;
+import java.text.DecimalFormat;
+import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
+import javafx.stage.Stage;
+
+
+public class TheCoffeeHouse extends Application {
+
+   public static void main(String[] args) {
+		launch(args);
+	}
+   
+   
+	@Override
+	public void start(Stage primaryStage) {
+		try {
+			StackPane root = new StackPane();
+			root.setStyle(
+	                        "-fx-background-color: white; " +
+	                        "-fx-background-insets: 10; " +
+	                        "-fx-background-radius: 10; " +
+	                        "-fx-effect: dropshadow(three-pass-box, black, 10, 0, 0, 0);"
+                           );
+                           
+			root.setPadding(new Insets(20));
+	         
+	        /*create a vbox with a text area that displays vertically */
+           
+	        VBox vbox = new VBox(10);
+	        Label lbName = new Label("The CSC210 Coffee House");
+           
+           /* cite: color hex codes found at www.colorhexa.com */
+           
+	        lbName.setTextFill(Color.web("#b5651d")); 
+	        lbName.setMaxWidth(Double.MAX_VALUE);
+	        AnchorPane.setLeftAnchor(lbName, 0.0);
+	        AnchorPane.setRightAnchor(lbName, 0.0);
+	        lbName.setAlignment(Pos.CENTER);
+	        Font font = Font.font("Monospaced", FontWeight.BOLD, 40);
+	        lbName.setFont(font);
+	        
+	        HBox zeroBox   = new HBox();
+	        HBox firstBox  = new HBox();
+	        HBox secondBox = new HBox();
+	        secondBox.setPrefWidth(560);
+	        
+	        zeroBox.setMaxWidth(Double.MAX_VALUE);
+	        zeroBox.setMinHeight(120);
+	        firstBox.setMaxWidth(Double.MAX_VALUE);
+	        firstBox.setMinHeight(120);
+	        secondBox.setMaxWidth(Double.MAX_VALUE);
+	        secondBox.setMinHeight(120);
+
+   	       /*Coffee image*/
+            
+   	       InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("CoffeeCup.jpeg");
+   	       Image coffeeImage = new Image(inputStream);
+   	       ImageView coffeeImageView = new ImageView(coffeeImage);
+   	       coffeeImageView.setFitHeight(100);
+   	       coffeeImageView.setFitWidth(100);
+	        
+	        /*Constructing First Grid*/
+           
+	        GridPane firstGrid = new GridPane(); //First Box Grid Labels and Values
+	        Label itemLabel = new Label("Item");
+	        Label priceLabel = new Label("Price");
+	        Label qtyLabel = new Label("Quantity"); // qty is abbreviation for quantity 
+	        Label itemValue = new Label("Regular Cup of Coffee");
+	        itemValue.setTextFill(Color.web("#ffffff")); // white text
+	        Label priceValue = new Label("$2.99");
+	        priceValue.setTextFill(Color.web("#ffffff"));// white text
+	        TextField qtyField = new TextField("1");
+	        
+          
+	        firstGrid.add (itemLabel,  0, 0);
+	        firstGrid.add (priceLabel, 1, 0);
+	        firstGrid.add (qtyLabel,   2, 0);
+	        firstGrid.add (itemValue,  0, 1);
+	        firstGrid.add (priceValue, 1, 1);
+	        firstGrid.add(qtyField,    2, 1);
+	        firstBox.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+	        firstBox.setBackground(new Background(new BackgroundFill(Color.web("#006241"), CornerRadii.EMPTY, Insets.EMPTY))); //Starbuck's Hunter Green
+	        
+	        /*Adding Styles*/
+           
+	        AnchorPane.setLeftAnchor(firstBox, 0.0);
+	        AnchorPane.setRightAnchor(firstBox, 0.0);
+	        firstBox.setAlignment(Pos.CENTER);
+	        firstGrid.setPadding(new Insets(20));
+	        
+	        firstGrid.setHgap(20);
+	        firstGrid.setVgap(20);
+	        Font headingFont = Font.font("Verdana", FontWeight.BOLD, FontPosture.REGULAR, 16);
+	        itemLabel.setFont(headingFont);
+	        itemLabel.setTextFill(Color.web("#ffffff")); 
+	        priceLabel.setFont(headingFont);
+	        priceLabel.setTextFill(Color.web("#ffffff"));
+	        qtyLabel.setFont(headingFont);
+	        qtyLabel.setTextFill(Color.web("#ffffff"));
+	      
+	        
+	        
+	        /*Constructing Second Grid */
+           
+	        Label costWithoutTaxesLabel = new Label("Cost without taxes:");
+	        Label taxesLabel = new Label("Taxes:");
+	        Label costWithTaxes = new Label("Cost with taxes:");
+	        Text costWithoutTaxeValue = new Text();
+	        costWithoutTaxeValue.setFill(Color.web("#ffffff"));
+	        Text taxesValue = new Text();
+	        taxesValue.setFill(Color.web("#ffffff"));
+	        Text costWithTaxesValue = new Text();
+	        costWithTaxesValue.setFill(Color.web("#ffffff"));
+	        GridPane secondGrid = new GridPane();
+	        
+	        secondGrid.add(costWithoutTaxesLabel, 0, 0);
+	        secondGrid.add(taxesLabel, 0, 1);
+	        secondGrid.add(costWithTaxes, 0, 2);
+	        secondGrid.add(costWithoutTaxeValue, 1, 0);
+	        secondGrid.add(taxesValue, 1, 1);
+	        secondGrid.add(costWithTaxesValue, 1, 2);
+	        Button calculateButton = new Button("CALCULATE");
+	        calculateButton.setStyle("-fx-background-color:  #FFFFFF;-fx-text-fill: #006241");
+	        secondGrid.add(calculateButton,1, 3);
+	        secondBox.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+	        secondBox.setBackground(new Background(new BackgroundFill(Color.web("#006241"), CornerRadii.EMPTY, Insets.EMPTY)));
+	        
+	         /*Adding Styles*/
+            
+	        AnchorPane.setLeftAnchor(secondBox, 0.0);
+	        AnchorPane.setRightAnchor(secondBox, 0.0);
+	        secondBox.setAlignment(Pos.CENTER);
+	        secondGrid.setPadding(new Insets(20));
+	        
+	        secondGrid.setHgap(10);
+	        secondGrid.setVgap(10);
+	        costWithoutTaxesLabel.setFont(headingFont);
+	        taxesLabel.setFont(headingFont);
+	        costWithTaxes.setFont(headingFont);
+	        costWithoutTaxesLabel.setTextFill(Color.web("#ffffff"));
+	        taxesLabel.setTextFill(Color.web("#ffffff"));
+	        costWithTaxes.setTextFill(Color.web("#ffffff"));
+	        
+	      
+	        
+	        calculateButton.setOnAction(new EventHandler<ActionEvent>() {
+	            @Override public void handle(ActionEvent e) {
+	            	int qty = 0;
+	            	if(qtyField.getText() == null || qtyField.getText().isEmpty()) {
+	            		Alert alert = new Alert(AlertType.ERROR, "Enter Quantity");
+	            		alert.show();
+	            	} else {
+	            		try {
+				if(Integer.parseInt(qtyField.getText()) > 0) {
+				  DecimalFormat df = new DecimalFormat();
+				  df.setMaximumFractionDigits(2); // round off two digits
+				  qty = Integer.parseInt(qtyField.getText());
+                        
+                        
+                       /*Debugging Note: Don't use float; it causes the 
+                       program to crash. Solution: Use double.*/
+                       
+                       /*Calculations*/
+                       
+			final double actualPrice = 2.99;
+			final double taxValue = 0.09;
+								
+                        double priceCalculatedWithTaxAndQty = (actualPrice + taxValue) * qty;
+								costWithoutTaxeValue.setText("$" + df.format((actualPrice * qty)));
+                        
+								taxesValue.setText("$" + df.format((taxValue * qty)));
+								costWithTaxesValue.setText("$" + df.format(priceCalculatedWithTaxAndQty));
+							} else {
+								Alert alert = new Alert(AlertType.ERROR, "Please enter a quantity greater than zero. ");
+								alert.show();
+								costWithoutTaxeValue.setText("");
+								taxesValue.setText("");
+								costWithTaxesValue.setText("");
+							}
+						} catch (NumberFormatException e1) {
+							Alert alert = new Alert(AlertType.ERROR, "Please enter positive whole numbers ONLY. ");
+							alert.show();
+							costWithoutTaxeValue.setText("");
+							taxesValue.setText("");
+							costWithTaxesValue.setText("");
+						}
+	            	}
+	                
+	            }
+	        });
+	        
+	        
+	        //Adding Childerns
+	        zeroBox.getChildren().add(lbName);
+	        secondBox.getChildren().add(secondGrid);
+			firstBox.getChildren().add(coffeeImageView);
+	        firstBox.getChildren().add(firstGrid); //Centering the grid
+	        vbox.getChildren().addAll(lbName, firstBox, secondBox);
+	        root.getChildren().add(vbox);
+	        
+	        Scene scene = new Scene(root, 600, 350); // the stack pane is the root node
+	        
+	        primaryStage.setTitle("The CSC210 Coffee House"); // tab title
+	        primaryStage.setScene(scene);
+	        primaryStage.show(); 
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+}
